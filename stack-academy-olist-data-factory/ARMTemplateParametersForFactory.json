@@ -5,10 +5,10 @@
 		"factoryName": {
 			"value": "stack-academy-olist-data-factory"
 		},
-		"stack_academy_olist_linked_service_connectionString": {
+		"stack_academy_olist_landing_accountKey": {
 			"value": ""
 		},
-		"stack_academy_olist_landing_accountKey": {
+		"stack_academy_olist_linked_service_connectionString": {
 			"value": ""
 		},
 		"stack_academy_olist_landing_properties_typeProperties_url": {

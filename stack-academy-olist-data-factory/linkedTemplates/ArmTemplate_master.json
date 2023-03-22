@@ -7,13 +7,13 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "stack-academy-olist-data-factory"
 		},
-		"stack_academy_olist_linked_service_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'stack_academy_olist_linked_service'"
-		},
 		"stack_academy_olist_landing_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'stack_academy_olist_landing'"
+		},
+		"stack_academy_olist_linked_service_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'stack_academy_olist_linked_service'"
 		},
 		"stack_academy_olist_landing_properties_typeProperties_url": {
 			"type": "string",
@@ -46,11 +46,11 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
-					"stack_academy_olist_linked_service_connectionString": {
-						"value": "[parameters('stack_academy_olist_linked_service_connectionString')]"
-					},
 					"stack_academy_olist_landing_accountKey": {
 						"value": "[parameters('stack_academy_olist_landing_accountKey')]"
+					},
+					"stack_academy_olist_linked_service_connectionString": {
+						"value": "[parameters('stack_academy_olist_linked_service_connectionString')]"
 					},
 					"stack_academy_olist_landing_properties_typeProperties_url": {
 						"value": "[parameters('stack_academy_olist_landing_properties_typeProperties_url')]"

@@ -7,13 +7,13 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "stack-academy-olist-data-factory"
 		},
-		"stack_academy_olist_linked_service_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'stack_academy_olist_linked_service'"
-		},
 		"stack_academy_olist_landing_accountKey": {
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'stack_academy_olist_landing'"
+		},
+		"stack_academy_olist_linked_service_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'stack_academy_olist_linked_service'"
 		},
 		"stack_academy_olist_landing_properties_typeProperties_url": {
 			"type": "string",
@@ -24,6 +24,174 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/stack-academy-olist-copy-all-data')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ForEach_mgg",
+						"type": "ForEach",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@pipeline().parameters.cw_items",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Copy_mgg",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [
+										{
+											"name": "Source",
+											"value": "dbo.@{item().source.table}"
+										},
+										{
+											"name": "Destination",
+											"value": "landing//@{item().destination.fileName}"
+										}
+									],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "ParquetSink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											},
+											"formatSettings": {
+												"type": "ParquetWriteSettings"
+											}
+										},
+										"enableStaging": false,
+										"validateDataConsistency": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "SourceDataset_mgg",
+											"type": "DatasetReference",
+											"parameters": {
+												"cw_table": "@item().source.table"
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DestinationDataset_mgg",
+											"type": "DatasetReference",
+											"parameters": {
+												"cw_fileName": "@item().destination.fileName"
+											}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"cw_items": {
+						"type": "Array",
+						"defaultValue": [
+							{
+								"source": {
+									"table": "olist_customers_dataset"
+								},
+								"destination": {
+									"fileName": "dboolist_customers_dataset.parquet"
+								}
+							},
+							{
+								"source": {
+									"table": "olist_geolocation_dataset"
+								},
+								"destination": {
+									"fileName": "dboolist_geolocation_dataset.parquet"
+								}
+							},
+							{
+								"source": {
+									"table": "olist_order_items_dataset"
+								},
+								"destination": {
+									"fileName": "dboolist_order_items_dataset.parquet"
+								}
+							},
+							{
+								"source": {
+									"table": "olist_order_payments_dataset"
+								},
+								"destination": {
+									"fileName": "dboolist_order_payments_dataset.parquet"
+								}
+							},
+							{
+								"source": {
+									"table": "olist_order_reviews_dataset"
+								},
+								"destination": {
+									"fileName": "dboolist_order_reviews_dataset.parquet"
+								}
+							},
+							{
+								"source": {
+									"table": "olist_orders_dataset"
+								},
+								"destination": {
+									"fileName": "dboolist_orders_dataset.parquet"
+								}
+							},
+							{
+								"source": {
+									"table": "olist_products_dataset"
+								},
+								"destination": {
+									"fileName": "dboolist_products_dataset.parquet"
+								}
+							},
+							{
+								"source": {
+									"table": "olist_sellers_dataset"
+								},
+								"destination": {
+									"fileName": "dboolist_sellers_dataset.parquet"
+								}
+							}
+						]
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SourceDataset_mgg')]",
+				"[concat(variables('factoryId'), '/datasets/DestinationDataset_mgg')]"
+			]
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/stack-academy-olist-copy-data')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
@@ -81,58 +249,6 @@
 								"parameters": {}
 							}
 						]
-					},
-					{
-						"name": "stack-academy-olist-copy-data_geolocation",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "ParquetSink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								},
-								"formatSettings": {
-									"type": "ParquetWriteSettings"
-								}
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "stack_academy_olist_geolocation",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "stack_academy_olist_landing",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
 					}
 				],
 				"policy": {
@@ -143,22 +259,70 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/stack_academy_olist_customers')]",
-				"[concat(variables('factoryId'), '/datasets/stack_academy_olist_landing')]",
-				"[concat(variables('factoryId'), '/datasets/stack_academy_olist_geolocation')]"
+				"[concat(variables('factoryId'), '/datasets/stack_academy_olist_landing')]"
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/stack_academy_olist_linked_service')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"name": "[concat(parameters('factoryName'), '/DestinationDataset_mgg')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
+				"linkedServiceName": {
+					"referenceName": "stack_academy_olist_landing",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"cw_fileName": {
+						"type": "String"
+					}
+				},
 				"annotations": [],
-				"type": "AzureSqlDatabase",
+				"type": "Parquet",
 				"typeProperties": {
-					"connectionString": "[parameters('stack_academy_olist_linked_service_connectionString')]"
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().cw_fileName",
+							"type": "Expression"
+						},
+						"fileSystem": "landing"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/stack_academy_olist_landing')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SourceDataset_mgg')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "stack_academy_olist_linked_service",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"cw_table": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": {
+						"value": "@dataset().cw_table",
+						"type": "Expression"
+					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/stack_academy_olist_linked_service')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/stack_academy_olist_customers')]",
@@ -206,50 +370,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/stack_academy_olist_landing')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobFS",
-				"typeProperties": {
-					"url": "[parameters('stack_academy_olist_landing_properties_typeProperties_url')]",
-					"accountKey": {
-						"type": "SecureString",
-						"value": "[parameters('stack_academy_olist_landing_accountKey')]"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/stack_academy_olist_landing')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "stack_academy_olist_landing",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "stack_academy_olist_output"
-				},
-				"annotations": [],
-				"type": "Parquet",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileSystem": "landing"
-					},
-					"compressionCodec": "snappy"
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/stack_academy_olist_landing')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/stack_academy_olist_geolocation')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -293,6 +413,63 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/stack_academy_olist_linked_service')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stack_academy_olist_landing')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "stack_academy_olist_landing",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "stack_academy_olist_output"
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "landing"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/stack_academy_olist_landing')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stack_academy_olist_landing')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('stack_academy_olist_landing_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('stack_academy_olist_landing_accountKey')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stack_academy_olist_linked_service')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('stack_academy_olist_linked_service_connectionString')]"
+				}
+			},
+			"dependsOn": []
 		}
 	]
 }
