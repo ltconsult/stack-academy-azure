@@ -1,0 +1,9 @@
+{
+	"name": "stack-academy-olist-data-factory",
+	"location": "eastus2",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "dfd38bb7-64f3-4009-afe8-eafbd61396de",
+		"tenantId": "d9ea3aba-81c1-4c31-9ec2-a2c4611bd2ac"
+	}
+}
