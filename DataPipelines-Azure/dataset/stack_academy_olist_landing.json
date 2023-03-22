@@ -5,6 +5,9 @@
 			"referenceName": "stack_academy_olist_landing",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "stack_academy_olist_output"
+		},
 		"annotations": [],
 		"type": "Parquet",
 		"typeProperties": {
