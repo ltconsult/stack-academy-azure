@@ -1,0 +1,37 @@
+{
+	"name": "stack_academy_olist_customers",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "stack_academy_olist_linked_service",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "customer_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "customer_unique_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "customer_zip_code_prefix",
+				"type": "nvarchar"
+			},
+			{
+				"name": "customer_city",
+				"type": "nvarchar"
+			},
+			{
+				"name": "customer_state",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "olist_customers_dataset"
+		}
+	}
+}
