@@ -178,7 +178,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "stack-academy-olist-copy-data",
+						"name": "stack-academy-olist-copy-data_customer",
 						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
