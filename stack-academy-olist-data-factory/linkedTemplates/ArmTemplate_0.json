@@ -77,7 +77,6 @@
 							"value": "@dataset().cw_fileName",
 							"type": "Expression"
 						},
-						"folderPath": "olist",
 						"fileSystem": "landing"
 					},
 					"compressionCodec": "snappy"
