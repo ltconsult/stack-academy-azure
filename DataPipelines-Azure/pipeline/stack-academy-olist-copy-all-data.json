@@ -1,0 +1,158 @@
+{
+	"name": "stack-academy-olist-copy-all-data",
+	"properties": {
+		"activities": [
+			{
+				"name": "ForEach_mgg",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.cw_items",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Copy_mgg",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [
+								{
+									"name": "Source",
+									"value": "dbo.@{item().source.table}"
+								},
+								{
+									"name": "Destination",
+									"value": "landing//@{item().destination.fileName}"
+								}
+							],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "ParquetSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "ParquetWriteSettings"
+									}
+								},
+								"enableStaging": false,
+								"validateDataConsistency": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "SourceDataset_mgg",
+									"type": "DatasetReference",
+									"parameters": {
+										"cw_table": "@item().source.table"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "DestinationDataset_mgg",
+									"type": "DatasetReference",
+									"parameters": {
+										"cw_fileName": "@item().destination.fileName"
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"cw_items": {
+				"type": "Array",
+				"defaultValue": [
+					{
+						"source": {
+							"table": "olist_customers_dataset"
+						},
+						"destination": {
+							"fileName": "dboolist_customers_dataset.parquet"
+						}
+					},
+					{
+						"source": {
+							"table": "olist_geolocation_dataset"
+						},
+						"destination": {
+							"fileName": "dboolist_geolocation_dataset.parquet"
+						}
+					},
+					{
+						"source": {
+							"table": "olist_order_items_dataset"
+						},
+						"destination": {
+							"fileName": "dboolist_order_items_dataset.parquet"
+						}
+					},
+					{
+						"source": {
+							"table": "olist_order_payments_dataset"
+						},
+						"destination": {
+							"fileName": "dboolist_order_payments_dataset.parquet"
+						}
+					},
+					{
+						"source": {
+							"table": "olist_order_reviews_dataset"
+						},
+						"destination": {
+							"fileName": "dboolist_order_reviews_dataset.parquet"
+						}
+					},
+					{
+						"source": {
+							"table": "olist_orders_dataset"
+						},
+						"destination": {
+							"fileName": "dboolist_orders_dataset.parquet"
+						}
+					},
+					{
+						"source": {
+							"table": "olist_products_dataset"
+						},
+						"destination": {
+							"fileName": "dboolist_products_dataset.parquet"
+						}
+					},
+					{
+						"source": {
+							"table": "olist_sellers_dataset"
+						},
+						"destination": {
+							"fileName": "dboolist_sellers_dataset.parquet"
+						}
+					}
+				]
+			}
+		},
+		"annotations": []
+	}
+}
