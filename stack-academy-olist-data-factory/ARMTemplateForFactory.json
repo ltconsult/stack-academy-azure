@@ -116,6 +116,9 @@
 					"referenceName": "stack_academy_olist_linked_service",
 					"type": "LinkedServiceReference"
 				},
+				"folder": {
+					"name": "stack_academy_olist_input"
+				},
 				"annotations": [],
 				"type": "AzureSqlTable",
 				"schema": [
@@ -174,6 +177,9 @@
 				"linkedServiceName": {
 					"referenceName": "stack_academy_olist_landing",
 					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "stack_academy_olist_output"
 				},
 				"annotations": [],
 				"type": "Parquet",
