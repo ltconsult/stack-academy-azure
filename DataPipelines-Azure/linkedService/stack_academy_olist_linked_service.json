@@ -1,0 +1,12 @@
+{
+	"name": "stack_academy_olist_linked_service",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": "integrated security=False;encrypt=True;connection timeout=30;data source=stack-academy-olist-sql-server.database.windows.net;initial catalog=stack_academy_olist_db;user id=stack_academy_olist_admin",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQEU2QkEzM0Q1LTE0MDEtNERFMi04OTYzLUQyMjVFQ0ZFNTI5MF82YzgyYjY5ZC0wNmYyLTQxYWMtOTc5Yy05MWJjZDI2YTQyODQiDQp9"
+		}
+	}
+}
