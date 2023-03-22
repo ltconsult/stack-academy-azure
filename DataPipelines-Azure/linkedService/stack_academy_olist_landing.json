@@ -1,0 +1,12 @@
+{
+	"name": "stack_academy_olist_landing",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://stackacademyoliststorage.dfs.core.windows.net/",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQEU2QkEzM0Q1LTE0MDEtNERFMi04OTYzLUQyMjVFQ0ZFNTI5MF9iYzBhYjVmMS1lYjk0LTQxZjQtODUwNC1jZmYxZWI0ZjkyM2EiDQp9"
+		}
+	}
+}
