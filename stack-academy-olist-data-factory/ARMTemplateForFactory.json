@@ -81,6 +81,58 @@
 								"parameters": {}
 							}
 						]
+					},
+					{
+						"name": "stack-academy-olist-copy-data_geolocation",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "stack_academy_olist_geolocation",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "stack_academy_olist_landing",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
 					}
 				],
 				"policy": {
@@ -91,7 +143,8 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/stack_academy_olist_customers')]",
-				"[concat(variables('factoryId'), '/datasets/stack_academy_olist_landing')]"
+				"[concat(variables('factoryId'), '/datasets/stack_academy_olist_landing')]",
+				"[concat(variables('factoryId'), '/datasets/stack_academy_olist_geolocation')]"
 			]
 		},
 		{
@@ -194,6 +247,51 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/stack_academy_olist_landing')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stack_academy_olist_geolocation')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "stack_academy_olist_linked_service",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "stack_academy_olist_input"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "customer_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "customer_unique_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "customer_zip_code_prefix",
+						"type": "nvarchar"
+					},
+					{
+						"name": "customer_city",
+						"type": "nvarchar"
+					},
+					{
+						"name": "customer_state",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "olist_geolocation_dataset"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/stack_academy_olist_linked_service')]"
 			]
 		}
 	]
