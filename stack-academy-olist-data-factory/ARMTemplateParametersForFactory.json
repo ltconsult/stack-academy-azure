@@ -11,8 +11,14 @@
 		"stack_academy_olist_linked_service_connectionString": {
 			"value": ""
 		},
+		"stack_academy_olist_notebook_accessToken": {
+			"value": ""
+		},
 		"stack_academy_olist_landing_properties_typeProperties_url": {
 			"value": "https://stackacademyoliststorage.dfs.core.windows.net/"
+		},
+		"stack_academy_olist_notebook_properties_typeProperties_existingClusterId": {
+			"value": "0322-123329-4inu38u2"
 		}
 	}
 }

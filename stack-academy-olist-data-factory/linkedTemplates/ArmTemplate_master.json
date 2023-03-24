@@ -15,9 +15,17 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'stack_academy_olist_linked_service'"
 		},
+		"stack_academy_olist_notebook_accessToken": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accessToken' of 'stack_academy_olist_notebook'"
+		},
 		"stack_academy_olist_landing_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://stackacademyoliststorage.dfs.core.windows.net/"
+		},
+		"stack_academy_olist_notebook_properties_typeProperties_existingClusterId": {
+			"type": "string",
+			"defaultValue": "0322-123329-4inu38u2"
 		},
 		"containerUri": {
 			"type": "string",
@@ -52,8 +60,14 @@
 					"stack_academy_olist_linked_service_connectionString": {
 						"value": "[parameters('stack_academy_olist_linked_service_connectionString')]"
 					},
+					"stack_academy_olist_notebook_accessToken": {
+						"value": "[parameters('stack_academy_olist_notebook_accessToken')]"
+					},
 					"stack_academy_olist_landing_properties_typeProperties_url": {
 						"value": "[parameters('stack_academy_olist_landing_properties_typeProperties_url')]"
+					},
+					"stack_academy_olist_notebook_properties_typeProperties_existingClusterId": {
+						"value": "[parameters('stack_academy_olist_notebook_properties_typeProperties_existingClusterId')]"
 					}
 				}
 			},
