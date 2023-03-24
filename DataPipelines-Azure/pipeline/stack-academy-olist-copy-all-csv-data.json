@@ -82,6 +82,33 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "stack-academy-olist-notebook",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "ForEach_3gj",
+						"dependencyConditions": [
+							"Skipped"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/luciano.teixeira@ltconsult.info/olist_processing_new"
+				},
+				"linkedServiceName": {
+					"referenceName": "stack_academy_olist_notebook",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"parameters": {
