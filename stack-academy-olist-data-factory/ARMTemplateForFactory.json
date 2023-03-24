@@ -31,7 +31,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "ForEach_iiy",
+						"name": "ForEach_3gj",
 						"type": "ForEach",
 						"dependsOn": [],
 						"userProperties": [],
@@ -42,7 +42,7 @@
 							},
 							"activities": [
 								{
-									"name": "Copy_iiy",
+									"name": "Copy_3gj",
 									"type": "Copy",
 									"dependsOn": [],
 									"policy": {
@@ -91,7 +91,7 @@
 									},
 									"inputs": [
 										{
-											"referenceName": "SourceDataset_iiy",
+											"referenceName": "SourceDataset_3gj",
 											"type": "DatasetReference",
 											"parameters": {
 												"cw_table": "@item().source.table"
@@ -100,7 +100,7 @@
 									],
 									"outputs": [
 										{
-											"referenceName": "DestinationDataset_iiy",
+											"referenceName": "DestinationDataset_3gj",
 											"type": "DatasetReference",
 											"parameters": {
 												"cw_fileName": "@item().destination.fileName"
@@ -183,6 +183,14 @@
 								"destination": {
 									"fileName": "dbo.olist_sellers_dataset.csv"
 								}
+							},
+							{
+								"source": {
+									"table": "product_category_name_translation"
+								},
+								"destination": {
+									"fileName": "dbo.product_category_name_translation.csv"
+								}
 							}
 						]
 					}
@@ -190,8 +198,8 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/SourceDataset_iiy')]",
-				"[concat(variables('factoryId'), '/datasets/DestinationDataset_iiy')]"
+				"[concat(variables('factoryId'), '/datasets/SourceDataset_3gj')]",
+				"[concat(variables('factoryId'), '/datasets/DestinationDataset_3gj')]"
 			]
 		},
 		{
@@ -433,6 +441,42 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DestinationDataset_3gj')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "stack_academy_olist_landing",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"cw_fileName": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().cw_fileName",
+							"type": "Expression"
+						},
+						"fileSystem": "landing"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/stack_academy_olist_landing')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DestinationDataset_iiy')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -499,6 +543,35 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/stack_academy_olist_landing')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SourceDataset_3gj')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "stack_academy_olist_linked_service",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"cw_table": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": {
+						"value": "@dataset().cw_table",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/stack_academy_olist_linked_service')]"
 			]
 		},
 		{
