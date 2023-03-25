@@ -1,0 +1,12 @@
+{
+	"name": "stack_academy_olist_synapse_ls",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDW",
+		"typeProperties": {
+			"connectionString": "integrated security=False;encrypt=True;connection timeout=30;data source=stack-academy-olist-synapse-ondemand.sql.azuresynapse.net;initial catalog=olist_synapse;user id=sqladminuser",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQEU2QkEzM0Q1LTE0MDEtNERFMi04OTYzLUQyMjVFQ0ZFNTI5MF83MTE1ZGI1Yy0xOGRjLTQzNjgtYTVkMS1hOWIzYWFkOThiOWMiDQp9"
+		}
+	}
+}
