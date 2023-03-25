@@ -112,6 +112,26 @@
 				"type": "SqlQuery"
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQL script 2')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "CREATE OR ALTER PROC CreateSQLServerlessOrdersView\nAS\nBEGIN\n\nDECLARE @statement VARCHAR(MAX) = \n'\nCREATE OR ALTER VIEW olistOrders AS\nSELECT\n    *\nFROM\n    OPENROWSET(\n        BULK ''processing/orders.parquet/*.parquet'',\n        DATA_SOURCE = ''OlistDataLake'',\n        FORMAT=''PARQUET''\n    ) AS ord;\n'\nPRINT @statement\n\nEXEC (@statement)\n\nEND\nGO\n\nEXEC CreateSQLServerlessOrdersView\n\nSELECT * FROM olistOrders",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "master",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
 		}
 	]
 }
