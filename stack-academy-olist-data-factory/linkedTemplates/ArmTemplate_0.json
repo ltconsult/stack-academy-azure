@@ -19,6 +19,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accessToken' of 'stack_academy_olist_notebook'"
 		},
+		"stack_academy_olist_synapse_ls_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'stack_academy_olist_synapse_ls'"
+		},
 		"stack_academy_olist_landing_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://stackacademyoliststorage.dfs.core.windows.net/"
@@ -76,6 +80,19 @@
 						"value": "[parameters('stack_academy_olist_notebook_accessToken')]"
 					},
 					"existingClusterId": "[parameters('stack_academy_olist_notebook_properties_typeProperties_existingClusterId')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stack_academy_olist_synapse_ls')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"connectionString": "[parameters('stack_academy_olist_synapse_ls_connectionString')]"
 				}
 			},
 			"dependsOn": []
@@ -479,6 +496,26 @@
 					{
 						"name": "stack-academy-olist-notebook",
 						"type": "DatabricksNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/luciano.teixeira@ltconsult.info/olist_processing_new"
+						},
+						"linkedServiceName": {
+							"referenceName": "stack_academy_olist_notebook",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "stack-academy-exec-proc",
+						"type": "SqlServerStoredProcedure",
 						"dependsOn": [
 							{
 								"activity": "ForEach_3gj",
@@ -496,10 +533,10 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"notebookPath": "/Users/luciano.teixeira@ltconsult.info/olist_processing_new"
+							"storedProcedureName": "[[dbo].[CreateSQLServerlessOrdersView]"
 						},
 						"linkedServiceName": {
-							"referenceName": "stack_academy_olist_notebook",
+							"referenceName": "stack_academy_olist_synapse_ls",
 							"type": "LinkedServiceReference"
 						}
 					}
@@ -591,6 +628,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/stack_academy_olist_notebook')]",
+				"[concat(variables('factoryId'), '/linkedServices/stack_academy_olist_synapse_ls')]",
 				"[concat(variables('factoryId'), '/datasets/SourceDataset_3gj')]",
 				"[concat(variables('factoryId'), '/datasets/DestinationDataset_3gj')]"
 			]

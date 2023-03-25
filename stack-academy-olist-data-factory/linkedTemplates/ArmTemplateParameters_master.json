@@ -14,6 +14,9 @@
 		"stack_academy_olist_notebook_accessToken": {
 			"value": ""
 		},
+		"stack_academy_olist_synapse_ls_connectionString": {
+			"value": ""
+		},
 		"stack_academy_olist_landing_properties_typeProperties_url": {
 			"value": "https://stackacademyoliststorage.dfs.core.windows.net/"
 		},
